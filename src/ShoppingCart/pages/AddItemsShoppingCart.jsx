@@ -16,7 +16,6 @@ export const AddItemsShoppingCart = () => {
 
   useEffect(() => {
     dispatch(getCards());
-    console.log('cards',cards);
   }, []);
 
 
@@ -25,7 +24,7 @@ export const AddItemsShoppingCart = () => {
     <Grid2 container>
       {
         cardsWithQuantity.map((card, index) => (
-          <CardApp key={index} cards={card} index={index}/>
+          <CardApp key={index} cards={card} index={index+1}/>
 
         ))
       }
