@@ -18,11 +18,15 @@ export const ShoppingCartSlice = createSlice({
     addToCart:(state,action) =>{
         state.cart.push(action.payload);
     },
+    addToCartLS:(state,action) =>{
+      state.cart = action.payload;
+  },
     
   }
 });
 export const { 
     setSellCards,
     startLoadingCards,
-    addToCart
+    addToCart,
+    addToCartLS
  } = ShoppingCartSlice.actions;

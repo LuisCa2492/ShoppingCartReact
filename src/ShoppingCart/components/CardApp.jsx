@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Grid2';
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
 import { addToCart } from '../../store/ShoppingCartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from '../helpers/Alert';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,16 +18,65 @@ import FormControl from '@mui/material/FormControl';
 
 export const CardApp = ( {cards=[],index = 0}) => {
   
+  const { cart} = useSelector((state) => state.shopCart);
   const [quantity, setQuantity] = useState(0);
   const dispatch = useDispatch();
+
+  // const addCardToCart = (pokemon) => {
+  //    if(cart.find(item => item.name === pokemon.name)){
+  //        return Alert('error', 'item already in cart');
+  //    }
+  //    if(quantity === 0){
+  //       return Alert('error', 'Please select a quantity');
+  //    }
+  //    dispatch(addToCart(pokemon));
+  //    Alert('success', 'item added to cart');
+  // }
+
   const addCardToCart = (pokemon) => {
-     dispatch(addToCart(pokemon));
-     Alert('success', 'item added to cart');
-  }
+    if (cart.some((item) => item.name === pokemon.name)) {
+      return Alert('error', 'Item already in cart');
+    }
+  
+    if (quantity === 0) {
+      return Alert('error', 'Please select a quantity');
+    }
+  
+    dispatch(addToCart(pokemon));
+  
+    // Guardar en localStorage sin duplicados
+    const updatedCart = [...cart, pokemon].filter(
+      (item, index, self) =>
+        index === self.findIndex((t) => t.name === item.name)
+    );
+  
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  
+    Alert('success', 'Item added to cart');
+  };
 
   const amountBuyed = (event) => {
     setQuantity(event.target.value);
   }
+
+  // 
+  useEffect(() => {
+    if (cart.length === 0) return;
+  
+    try {
+      const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+      // Fusionar sin duplicados
+      const mergedCart = [...savedCart, ...cart].filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.name === item.name) // Comparación correcta
+      );
+  
+      localStorage.setItem('cart', JSON.stringify(mergedCart));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [cart]); // Se ejecuta solo cuando `cart` cambia
 
   return (
     <>
@@ -74,7 +123,7 @@ export const CardApp = ( {cards=[],index = 0}) => {
               
               </FormControl>
               <IconButton title='Add to Cart' 
-                onClick={() => addCardToCart({name:cards.name, image:`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`})}>
+                onClick={() => addCardToCart({name:cards.name, image:`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`,amount: quantity})}>
                   <AddShoppingCart />
               </IconButton>
             </CardActions>
