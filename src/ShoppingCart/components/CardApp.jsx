@@ -22,17 +22,6 @@ export const CardApp = ( {cards=[],index = 0}) => {
   const [quantity, setQuantity] = useState(0);
   const dispatch = useDispatch();
 
-  // const addCardToCart = (pokemon) => {
-  //    if(cart.find(item => item.name === pokemon.name)){
-  //        return Alert('error', 'item already in cart');
-  //    }
-  //    if(quantity === 0){
-  //       return Alert('error', 'Please select a quantity');
-  //    }
-  //    dispatch(addToCart(pokemon));
-  //    Alert('success', 'item added to cart');
-  // }
-
   const addCardToCart = (pokemon) => {
     if (cart.some((item) => item.name === pokemon.name)) {
       return Alert('error', 'Item already in cart');
@@ -93,7 +82,7 @@ export const CardApp = ( {cards=[],index = 0}) => {
             />
             <CardMedia
               sx={{ height: 140 }}
-              image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`}
+              image={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${cards.index}.png`}
               title={cards.name}
             />
             <CardContent>
@@ -123,7 +112,7 @@ export const CardApp = ( {cards=[],index = 0}) => {
               
               </FormControl>
               <IconButton title='Add to Cart' 
-                onClick={() => addCardToCart({name:cards.name, image:`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`,amount: quantity})}>
+                onClick={() => addCardToCart({name:cards.name, image:`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${cards.index}.png`,amount: quantity})}>
                   <AddShoppingCart />
               </IconButton>
             </CardActions>

@@ -1,70 +1,58 @@
-import React, { useEffect } from 'react'
-import {CardApp} from '../components/CardApp'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { CardApp } from '../components/CardApp';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCards } from '../../store/thunks';
 import Grid2 from '@mui/material/Grid2';
-import { addToCart } from '../../store/ShoppingCartSlice';
+import Pagination from '@mui/material/Pagination';
 
 export const AddItemsShoppingCart = () => {
-
-  const {sellCards,cart} = useSelector((state) => state.shopCart);
+  
+  const { sellCards, cart } = useSelector((state) => state.shopCart);
   const dispatch = useDispatch();
-  
- const cardsWithQuantity = sellCards.map( card => ({
+
+  // Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 6; // Número de tarjetas por página
+
+  const cardsWithQuantity = sellCards.map( (card,index) => ({
     ...card,
-    amount:9
- }));
+    amount:9,
+    index: index+1
+   }));
 
-  // useEffect(() => {
-  //   dispatch(getCards());
-  //   try {
-  //     const savedCart = localStorage.getItem('cart');
-  //     if (savedCart) {
-  //         const cartFromStorage = JSON.parse(savedCart);
+  // Determina qué tarjetas mostrar según la página actual
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = cardsWithQuantity.slice(indexOfFirstCard, indexOfLastCard);
 
-  //         cartFromStorage.forEach(item => {
-  //             // Evitar duplicados comprobando si ya existe en el store
-  //             if (!cart.some(cartItem => cartItem.id === item.id)) {
-  //                 dispatch(addToCart(item));
-  //             }
-  //         });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, []);
+  // Función para manejar el cambio de página
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   useEffect(() => {
-    dispatch(getCards()); // Obtener las tarjetas
-  
-    try {
-      const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-  
-      // Filtrar solo los elementos que aún no están en Redux
-      const newItems = savedCart.filter(
-        (item) => !cart.some((cartItem) => cartItem.id === item.id)
-      );
-  
-      if (newItems.length > 0) {
-        newItems.forEach((item) => dispatch(addToCart(item)));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(getCards()); // Obtener las tarjetas al cargar el componente
   }, [dispatch]);
 
   return (
-    <>
-    <Grid2 container>
-      {
-        cardsWithQuantity.map((card, index) => (
-          <CardApp key={index} cards={card} index={index+1}/>
+    <div>
+      {/* Mostrar las tarjetas con la cantidad de la página actual */}
+      <Grid2 container spacing={2}>
+        {currentCards.map((card, index) => (
+          <CardApp key={index} cards={card} index={index + 1} />
+        ))}
+      </Grid2>
 
-        ))
-      }
+      {/* Paginación */}
+      <Pagination
+        count={Math.ceil(sellCards.length / cardsPerPage)} // Total de páginas
+        page={currentPage} // Página actual
+        onChange={handlePageChange} // Función para cambiar de página
+        color="primary"
+        sx={{ mt: 2 }} // Espaciado superior
+      />
+    </div>
+  );
+};
 
-    </Grid2>
-    </>
-  )
-}
-
-export default AddItemsShoppingCart
+export default AddItemsShoppingCart;
