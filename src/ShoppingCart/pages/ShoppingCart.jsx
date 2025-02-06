@@ -1,7 +1,6 @@
-import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { addToCart, addToCartLS } from '../../store/ShoppingCartSlice';
+import { addToCartLS } from '../../store/ShoppingCartSlice';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,7 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 export const ShoppingCart = () => {
-  const cart = useSelector((state) => state.shopCart.cart);
+
+  const {cart} = useSelector((state) => state.shopCart);
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false); // Evitar recarga innecesaria
 

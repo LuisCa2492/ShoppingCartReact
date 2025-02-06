@@ -11,34 +11,16 @@ import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 export const NavBar = () => {
 
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   const changeRoute = ( route ) => {
-    console.log(route);
     navigate(`${route}`);
   }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-//   const handleOpenUserMenu = (event) => {
-//     navigate('/shoppingCart');
-//   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -97,15 +79,6 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {/* {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))} */}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Shopping Cart">

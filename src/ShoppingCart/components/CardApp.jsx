@@ -78,7 +78,6 @@ export const CardApp = ( {cards=[],index = 0}) => {
                 </IconButton>
               }
               title={cards.name}
-              // subheader="September 14, 2016"
             />
             <CardMedia
               sx={{ height: 140 }}
@@ -86,13 +85,7 @@ export const CardApp = ( {cards=[],index = 0}) => {
               title={cards.name}
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Lizard
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Lizards are a widespread group of squamate reptiles, with over 6,000
-                species, ranging across all continents except Antarctica
-              </Typography>
+              
             </CardContent>
             <CardActions>
             <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
