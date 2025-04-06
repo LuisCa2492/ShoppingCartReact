@@ -6,6 +6,7 @@ export const ShoppingCartSlice = createSlice({
      sellCards: [],
      isLoading:false,
      cart:[],
+     successfullBuy: false
   },
   reducers: {
     startLoadingCards: (state, /* action */ ) => {
@@ -20,7 +21,11 @@ export const ShoppingCartSlice = createSlice({
     },
     addToCartLS:(state,action) =>{
       state.cart = action.payload;
-  },
+    },
+    setSuccessfullBuy:(state,action) => {
+      state.successfullBuy = action.payload;
+      state.cart = [];
+    }
     
   }
 });
@@ -28,5 +33,6 @@ export const {
     setSellCards,
     startLoadingCards,
     addToCart,
-    addToCartLS
+    addToCartLS,
+    setSuccessfullBuy
  } = ShoppingCartSlice.actions;
