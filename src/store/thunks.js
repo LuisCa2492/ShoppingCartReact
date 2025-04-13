@@ -2,9 +2,16 @@ import { backendApi } from "../api/backendAPi";
 import { pokemonApi } from "../api/pokemonApi";
 import { setSellCards, setSuccessfullBuy } from "./ShoppingCartSlice";
 
-export const getCards = () => {
+export const getCards = (cardsPerPage) => {
     return async(dispatch) => {
-        const result = await pokemonApi.get('pokemon?limit=100');
+        const result = await pokemonApi.get(`pokemon/?limit=${cardsPerPage}?offset=0`);
+        dispatch(setSellCards(result.data.results));
+    };
+}
+
+export const getCardsByPagination = (cardsPerPage,page) => {
+    return async(dispatch) => {
+        const result = await pokemonApi.get(`pokemon/?limit=${cardsPerPage}&offset=${cardsPerPage * page}`);
         dispatch(setSellCards(result.data.results));
     };
 }

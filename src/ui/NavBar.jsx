@@ -11,7 +11,7 @@ import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 
-export const NavBar = () => {
+export const NavBar = ({titulo,subtitulo}) => {
 
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ export const NavBar = () => {
               textDecoration: 'none',
             }}
           >
-            AppShoppingCart
+            {titulo} {subtitulo}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
